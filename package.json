@@ -1,0 +1,15 @@
+{
+  "name": "para-jimena",
+  "version": "1.0.0",
+  "description": "ilv",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ytdl-core": "^4.11.5"
+  }
+}
