@@ -7,57 +7,48 @@ window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     const embed = document.getElementById('deftones-embed');
 
+    if (!splash) return;
+
     splash.addEventListener('click', function enterSite(e) {
-        const rect = splash.getBoundingClientRect();
-        const x = e.clientX || rect.width / 2;
-        const y = e.clientY || rect.height / 2;
+        const x = e.clientX, y = e.clientY;
 
         // Explosion de particulas
-        for (let i = 0; i < 40; i++) {
+        const emojis = ['💕', '✨', '🌸', '💖', '⭐', '🌺', '🩷', '💗'];
+        for (let i = 0; i < 50; i++) {
             const p = document.createElement('div');
-            const emojis = ['💕', '✨', '🌸', '💖', '⭐', '🌺', '🩷', '💗'];
             p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            const angle = (Math.PI * 2 / 40) * i + (Math.random() - 0.5) * 0.5;
-            const dist = 150 + Math.random() * 250;
-            const tx = Math.cos(angle) * dist;
-            const ty = Math.sin(angle) * dist;
+            const angle = (Math.PI * 2 / 50) * i + (Math.random() - 0.5) * 0.3;
+            const dist = 100 + Math.random() * 300;
             p.style.cssText = `
-                position: fixed;
-                left: ${x}px;
-                top: ${y}px;
-                font-size: ${1 + Math.random() * 1.5}rem;
-                pointer-events: none;
-                z-index: 20000;
-                transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-                opacity: 1;
-                transform: scale(0);
+                position:fixed;left:${x}px;top:${y}px;
+                font-size:${1 + Math.random() * 1.5}rem;
+                pointer-events:none;z-index:999999;
+                transition:all 1s cubic-bezier(0.16,1,0.3,1);
+                opacity:1;transform:scale(0);
             `;
             document.body.appendChild(p);
             requestAnimationFrame(() => {
-                p.style.transform = `translate(${tx}px, ${ty}px) scale(1) rotate(${Math.random() * 720}deg)`;
+                p.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(1) rotate(${Math.random() * 720}deg)`;
                 p.style.opacity = '0';
             });
             setTimeout(() => p.remove(), 1200);
         }
 
-        // Animacion del splash
-        splash.querySelector('.splash-content').style.transform = 'scale(0.8)';
-        splash.querySelector('.splash-content').style.opacity = '0';
-        splash.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-        splash.style.backdropFilter = 'blur(0px)';
-
+        // Ocultar splash
+        splash.querySelector('div:last-child').style.transform = 'scale(0.7)';
+        splash.querySelector('div:last-child').style.opacity = '0';
         setTimeout(() => {
             splash.classList.add('hidden');
-            // Loader aparece breve
+            // Loader breve
             loader.classList.remove('hidden');
-            setTimeout(() => {
-                loader.classList.add('hidden');
-            }, 1800);
-        }, 500);
+            setTimeout(() => loader.classList.add('hidden'), 1500);
+        }, 400);
 
-        // Iniciar musica (Spotify)
-        embed.src = 'https://open.spotify.com/embed/track/4bLCPfBLKlqiONo6TALTh5?utm_source=generator&autoplay=1';
-        embed.style.display = 'block';
+        // Musica - Spotify
+        if (embed) {
+            embed.src = 'https://open.spotify.com/embed/track/4bLCPfBLKlqiONo6TALTh5?utm_source=generator&autoplay=1';
+            embed.style.display = 'block';
+        }
     }, { once: true });
 });
 // Contador de tiempo juntos
