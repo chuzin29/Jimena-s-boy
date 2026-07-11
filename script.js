@@ -1,10 +1,64 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
-// Loader
+
+// SPLASH - Click para entrar
 window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-    }, 2800);
+    const splash = document.getElementById('splash');
+    const loader = document.getElementById('loader');
+    const embed = document.getElementById('deftones-embed');
+
+    splash.addEventListener('click', function enterSite(e) {
+        const rect = splash.getBoundingClientRect();
+        const x = e.clientX || rect.width / 2;
+        const y = e.clientY || rect.height / 2;
+
+        // Explosion de particulas
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            const emojis = ['💕', '✨', '🌸', '💖', '⭐', '🌺', '🩷', '💗'];
+            p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const angle = (Math.PI * 2 / 40) * i + (Math.random() - 0.5) * 0.5;
+            const dist = 150 + Math.random() * 250;
+            const tx = Math.cos(angle) * dist;
+            const ty = Math.sin(angle) * dist;
+            p.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                font-size: ${1 + Math.random() * 1.5}rem;
+                pointer-events: none;
+                z-index: 20000;
+                transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+                opacity: 1;
+                transform: scale(0);
+            `;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${tx}px, ${ty}px) scale(1) rotate(${Math.random() * 720}deg)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 1200);
+        }
+
+        // Animacion del splash
+        splash.querySelector('.splash-content').style.transform = 'scale(0.8)';
+        splash.querySelector('.splash-content').style.opacity = '0';
+        splash.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        splash.style.backdropFilter = 'blur(0px)';
+
+        setTimeout(() => {
+            splash.classList.add('hidden');
+            // Loader aparece breve
+            loader.classList.remove('hidden');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 1800);
+        }, 500);
+
+        // Iniciar musica (Spotify)
+        embed.src = 'https://open.spotify.com/embed/track/4bLCPfBLKlqiONo6TALTh5?utm_source=generator&autoplay=1';
+        embed.style.display = 'block';
+    }, { once: true });
 });
 // Contador de tiempo juntos
 function updateCounter() {
@@ -273,21 +327,6 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 // Transicion suave en imagen del lightbox
 document.getElementById('lightbox-img').style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-// MUSICA - Entombed autoplay al cargar
-window.addEventListener('load', () => {
-    const embed = document.getElementById('deftones-embed');
-    if (embed) {
-        const startAudio = () => {
-            embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&enablejsapi=1';
-            document.removeEventListener('click', startAudio);
-            document.removeEventListener('touchstart', startAudio);
-            document.removeEventListener('scroll', startAudio);
-        };
-        document.addEventListener('click', startAudio, { once: true });
-        document.addEventListener('touchstart', startAudio, { once: true });
-        document.addEventListener('scroll', startAudio, { once: true });
-    }
-});
 // Animacion scroll para seccion Deftones
 const deftonesObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

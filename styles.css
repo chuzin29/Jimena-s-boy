@@ -32,6 +32,162 @@ body {
     padding: 0 20px;
 }
 
+/* SPLASH - CLICK PARA ENTRAR */
+.splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 30% 40%, rgba(233, 30, 99, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(156, 39, 176, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 107, 157, 0.08) 0%, transparent 50%);
+    animation: splashPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes splashPulse {
+    0% { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.08); }
+}
+
+.splash-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.splash-heart {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: splashHeartbeat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 50px rgba(233, 30, 99, 0.5));
+}
+
+@keyframes splashHeartbeat {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(233, 30, 99, 0.5)); }
+    15% { transform: scale(1.3); filter: drop-shadow(0 0 80px rgba(233, 30, 99, 0.8)); }
+    30% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(233, 30, 99, 0.5)); }
+    45% { transform: scale(1.15); filter: drop-shadow(0 0 65px rgba(233, 30, 99, 0.6)); }
+}
+
+.splash-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--rose), var(--pink));
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientMove 5s ease infinite;
+    margin-bottom: 15px;
+}
+
+.splash-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    animation: pulseText 2s ease-in-out infinite;
+}
+
+.splash-tap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.splash-tap-icon {
+    font-size: 2.5rem;
+    animation: tapBounce 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(233, 30, 99, 0.3));
+}
+
+@keyframes tapBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    25% { transform: translateY(-10px) scale(1.1); }
+    50% { transform: translateY(0) scale(1); }
+    75% { transform: translateY(-5px) scale(1.05); }
+}
+
+.splash-rings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    pointer-events: none;
+}
+
+.splash-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(233, 30, 99, 0.15);
+    border-radius: 50%;
+    animation: ringExpand 3s ease-out infinite;
+}
+
+.splash-ring:nth-child(1) {
+    width: 100px;
+    height: 100px;
+    animation-delay: 0s;
+}
+
+.splash-ring:nth-child(2) {
+    width: 180px;
+    height: 180px;
+    animation-delay: 0.5s;
+}
+
+.splash-ring:nth-child(3) {
+    width: 260px;
+    height: 260px;
+    animation-delay: 1s;
+}
+
+@keyframes ringExpand {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
 /* LOADER */
 .loader {
     position: fixed;
