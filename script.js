@@ -273,30 +273,21 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 // Transicion suave en imagen del lightbox
 document.getElementById('lightbox-img').style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-// MUSICA - Entombed
-let musicPlaying = false;
-let musicPlayer = null;
-function toggleMusic() {
+// MUSICA - Entombed autoplay al cargar
+window.addEventListener('load', () => {
     const embed = document.getElementById('deftones-embed');
-    const btn = document.querySelector('.deftones-play-btn');
-    const icon = btn.querySelector('.play-icon');
-    const text = btn.querySelector('.play-text');
-    if (!musicPlaying) {
-        embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&enablejsapi=1';
-        embed.style.display = 'block';
-        icon.textContent = '⏸';
-        text.textContent = 'Reproduciendo Entombed...';
-        musicPlaying = true;
-        btn.classList.add('playing');
-    } else {
-        embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?enablejsapi=1';
-        embed.style.display = 'none';
-        icon.textContent = '▶';
-        text.textContent = 'Reproducir nuestra canción';
-        musicPlaying = false;
-        btn.classList.remove('playing');
+    if (embed) {
+        const startAudio = () => {
+            embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&enablejsapi=1';
+            document.removeEventListener('click', startAudio);
+            document.removeEventListener('touchstart', startAudio);
+            document.removeEventListener('scroll', startAudio);
+        };
+        document.addEventListener('click', startAudio, { once: true });
+        document.addEventListener('touchstart', startAudio, { once: true });
+        document.addEventListener('scroll', startAudio, { once: true });
     }
-}
+});
 // Animacion scroll para seccion Deftones
 const deftonesObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
