@@ -230,3 +230,107 @@ document.querySelectorAll('.love-card').forEach(card => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
     });
 });
+
+// LIGHTBOX
+let currentImageIndex = 0;
+const galleryImages = [];
+const captions = [
+    "Nuestro primer momento juntos 💕",
+    "Tu sonrisa ilumina todo ✨",
+    "Recuerdos que atesoro 🌸",
+    "Cada segundo a tu lado es un regalo 💖",
+    "Te amo más de lo que las palabras pueden decir 💌",
+    "Mi lugar favorito es a tu lado 🤗",
+    "Juntos somos invencibles 💪",
+    "Eres mi persona favorita en el mundo 🌍",
+    "Nuestra historia apenas comienza 📖",
+    "Contigo todo es mejor 🦋",
+    "Mi corazón es tuyo 💝",
+    "Gracias por existir 🙏",
+    "Los mejores momentos están por venir 🌟",
+    "Eres mi todo 🥰",
+    "Para siempre juntos ∞"
+];
+
+// Recopilar imagenes de la galeria
+document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+    galleryImages.push(img.src);
+    img.parentElement.addEventListener('click', () => openLightbox(index));
+    img.style.cursor = 'pointer';
+});
+
+function openLightbox(index) {
+    currentImageIndex = index;
+    const lightbox = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+
+    img.src = galleryImages[index];
+    caption.textContent = captions[index] || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+
+    img.style.opacity = '0';
+    img.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        img.src = galleryImages[currentImageIndex];
+        caption.textContent = captions[currentImageIndex] || '';
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+    }, 200);
+}
+
+function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+
+    img.style.opacity = '0';
+    img.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        img.src = galleryImages[currentImageIndex];
+        caption.textContent = captions[currentImageIndex] || '';
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+    }, 200);
+}
+
+// Cerrar lightbox con ESC o click fuera
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+});
+
+document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeLightbox();
+});
+
+// Transicion suave en imagen del lightbox
+document.getElementById('lightbox-img').style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+// Animacion scroll para seccion Deftones
+const deftonesObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.lyric-line').forEach(line => {
+                line.style.animationPlayState = 'running';
+            });
+        }
+    });
+}, { threshold: 0.3 });
+
+const deftonesSection = document.querySelector('.deftones-section');
+if (deftonesSection) deftonesObserver.observe(deftonesSection);

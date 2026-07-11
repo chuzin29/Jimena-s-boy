@@ -786,6 +786,297 @@ body {
     border-top: 1px solid rgba(233, 30, 99, 0.1);
 }
 
+/* LIGHTBOX */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.4s ease;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.lightbox-frame {
+    position: relative;
+    max-width: 85vw;
+    max-height: 85vh;
+    padding: 50px;
+    animation: scaleInLightbox 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleInLightbox {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.lightbox-frame img {
+    max-width: 100%;
+    max-height: 75vh;
+    border-radius: 16px;
+    display: block;
+    box-shadow: 
+        0 0 0 4px rgba(233, 30, 99, 0.5),
+        0 0 0 8px rgba(156, 39, 176, 0.3),
+        0 0 0 12px rgba(233, 30, 99, 0.2),
+        0 0 60px rgba(233, 30, 99, 0.4);
+}
+
+/* FRAME DECORATIONS */
+.frame-corner {
+    position: absolute;
+    font-size: 2.2rem;
+    z-index: 10;
+    animation: floatFrame 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
+}
+
+.frame-tl { top: 5px; left: 5px; }
+.frame-tr { top: 5px; right: 5px; animation-delay: 0.5s; }
+.frame-bl { bottom: 5px; left: 5px; animation-delay: 1s; }
+.frame-br { bottom: 5px; right: 5px; animation-delay: 1.5s; }
+
+@keyframes floatFrame {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+.frame-side {
+    position: absolute;
+    font-size: 1.1rem;
+    letter-spacing: 8px;
+    opacity: 0.8;
+    animation: sparkle 3s ease-in-out infinite;
+}
+
+.frame-top {
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.frame-bottom {
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    animation-delay: 1.5s;
+}
+
+.frame-left {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 2;
+    writing-mode: vertical-rl;
+    letter-spacing: 10px;
+}
+
+.frame-right {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 2;
+    writing-mode: vertical-rl;
+    letter-spacing: 10px;
+    animation-delay: 1.5s;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 5px rgba(233, 30, 99, 0.3)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.6)); }
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.lightbox-close:hover {
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.6);
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(233, 30, 99, 0.3);
+    border: 2px solid rgba(233, 30, 99, 0.5);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-nav:hover {
+    background: rgba(233, 30, 99, 0.6);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev { left: -20px; }
+.lightbox-next { right: -20px; }
+
+.lightbox-caption {
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.3rem;
+    color: var(--pink);
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+}
+
+/* DEFTONES SECTION */
+.deftones-section {
+    padding: 120px 0;
+    background: linear-gradient(180deg, var(--bg) 0%, #0d0d12 50%, #120a15 100%);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.deftones-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at 50% 0%, rgba(180, 20, 60, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(100, 0, 80, 0.06) 0%, transparent 50%);
+    animation: bgPulse 10s ease-in-out infinite alternate;
+}
+
+.deftones-content {
+    position: relative;
+    z-index: 1;
+}
+
+.deftones-vinyl {
+    font-size: 5rem;
+    margin-bottom: 25px;
+    animation: spin 8s linear infinite;
+    filter: drop-shadow(0 0 30px rgba(180, 20, 60, 0.4));
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.deftones-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #c41e3a, #ff6b9d, #8b0045);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.deftones-quote {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+.deftones-lyrics {
+    margin-bottom: 40px;
+}
+
+.lyric-line {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    color: rgba(255, 107, 157, 0.7);
+    margin-bottom: 12px;
+    font-style: italic;
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: fadeInLyric 0.8s ease forwards;
+}
+
+.lyric-line:nth-child(1) { animation-delay: 0.5s; }
+.lyric-line:nth-child(2) { animation-delay: 1s; }
+.lyric-line:nth-child(3) { animation-delay: 1.5s; }
+
+@keyframes fadeInLyric {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.deftones-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1.8rem;
+}
+
+.deftones-hearts span {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.deftones-hearts span:nth-child(odd) {
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+.deftones-hearts span:nth-child(even) {
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.4));
+}
+
+.deftones-hearts span:nth-child(1) { animation-delay: 0s; }
+.deftones-hearts span:nth-child(2) { animation-delay: 0.15s; }
+.deftones-hearts span:nth-child(3) { animation-delay: 0.3s; }
+.deftones-hearts span:nth-child(4) { animation-delay: 0.45s; }
+.deftones-hearts span:nth-child(5) { animation-delay: 0.6s; }
+
 /* RESPONSIVE - TABLETS */
 @media (max-width: 1024px) {
     .love-grid {
