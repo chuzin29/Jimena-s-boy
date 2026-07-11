@@ -40,15 +40,19 @@ window.addEventListener('load', () => {
     splash.addEventListener('click', function enterSite(e) {
         const x = e.clientX, y = e.clientY;
 
-        const emojis = ['💕', '✨', '🌸', '💖', '⭐', '🌺', '🩷', '💗'];
-        for (let i = 0; i < 50; i++) {
+        const colors = ['#ff6b9d', '#9c27b0', '#ff4081', '#e91e63', '#ce93d8', '#f48fb1', '#b39ddb', '#f06292'];
+        for (let i = 0; i < 40; i++) {
             const p = document.createElement('div');
-            p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            const angle = (Math.PI * 2 / 50) * i + (Math.random() - 0.5) * 0.3;
-            const dist = 100 + Math.random() * 300;
+            const size = 4 + Math.random() * 8;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const angle = (Math.PI * 2 / 40) * i + (Math.random() - 0.5) * 0.3;
+            const dist = 80 + Math.random() * 250;
             p.style.cssText = `
                 position:fixed;left:${x}px;top:${y}px;
-                font-size:${1 + Math.random() * 1.5}rem;
+                width:${size}px;height:${size}px;
+                border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+                background:${color};
+                box-shadow:0 0 ${6 + Math.random() * 8}px ${color};
                 pointer-events:none;z-index:999999;
                 transition:all 1s cubic-bezier(0.16,1,0.3,1);
                 opacity:1;transform:scale(0);
@@ -72,7 +76,7 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        if (status) status.textContent = '🔊 Reproduciendo Entombed';
+        if (status) status.textContent = 'Reproduciendo Entombed';
 
         if (player && typeof player.playVideo === 'function') {
             player.playVideo();
@@ -196,42 +200,7 @@ window.addEventListener('load', () => {
         }
     }, 3000);
 });
-// Efecto de click - corazones explotan
-document.addEventListener('click', (e) => {
-    const emojis = ['❤️', '💕', '💖', '💗', '💝'];
-    for (let i = 0; i < 6; i++) {
-        setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            heart.style.cssText = `
-                position: fixed;
-                left: ${e.clientX + (Math.random() - 0.5) * 120}px;
-                top: ${e.clientY + (Math.random() - 0.5) * 120}px;
-                font-size: ${Math.random() * 1.5 + 1}rem;
-                pointer-events: none;
-                z-index: 9999;
-                animation: clickBurst 1s ease-out forwards;
-            `;
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 1000);
-        }, i * 80);
-    }
-});
-// Agregar animacion de burst al CSS dinamicamente
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes clickBurst {
-        0% {
-            opacity: 1;
-            transform: translate(0, 0) scale(1);
-        }
-        100% {
-            opacity: 0;
-            transform: translate(var(--tx, 0), var(--tx, -80px)) scale(0.3);
-        }
-    }
-`;
-document.head.appendChild(style);
+
 // Back to top button
 const backToTop = document.createElement('button');
 backToTop.className = 'back-to-top';
@@ -264,19 +233,24 @@ document.querySelectorAll('.gallery-item img').forEach((img, index) => {
     img.style.cursor = 'pointer';
 });
 function createParticles(x, y, count = 24) {
-    const emojis = ['✨', '🌸', '💖', '⭐', '🌺', '💕', '🩷', '✨'];
+    const colors = ['#ff6b9d', '#ce93d8', '#f48fb1', '#e91e63', '#b39ddb', '#f06292', '#9c27b0', '#ff4081'];
     for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
-        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        const size = 3 + Math.random() * 7;
+        const color = colors[Math.floor(Math.random() * colors.length)];
         const angle = (Math.PI * 2 / count) * i;
-        const velocity = 80 + Math.random() * 120;
+        const velocity = 60 + Math.random() * 100;
         const tx = Math.cos(angle) * velocity;
         const ty = Math.sin(angle) * velocity;
         p.style.cssText = `
             position: fixed;
             left: ${x}px;
             top: ${y}px;
-            font-size: ${0.8 + Math.random() * 1}rem;
+            width: ${size}px;
+            height: ${size}px;
+            border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+            background: ${color};
+            box-shadow: 0 0 ${4 + Math.random() * 6}px ${color};
             pointer-events: none;
             z-index: 10001;
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);

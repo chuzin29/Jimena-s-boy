@@ -58,7 +58,9 @@ body {
 }
 
 .loader-heart {
-    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     animation: pulse 1s ease-in-out infinite;
     filter: drop-shadow(0 0 30px rgba(233, 30, 99, 0.5));
 }
@@ -217,7 +219,8 @@ body {
 
 .heart-icon {
     margin: 0 25px;
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
     animation: heartbeat 1.5s ease-in-out infinite;
     filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.5));
 }
@@ -484,15 +487,26 @@ body {
 }
 
 .love-icon {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.love-icon svg {
+    width: 28px;
+    height: 28px;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    filter: drop-shadow(0 0 20px rgba(233, 30, 99, 0.3));
 }
 
 .love-card:hover .love-icon {
-    transform: scale(1.2) rotate(5deg);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
 }
 
 .love-card h3 {
@@ -679,7 +693,6 @@ body {
     position: absolute;
     bottom: 25px;
     left: 25px;
-    font-size: 2.5rem;
     animation: heartbeat 1.5s ease-in-out infinite;
     filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.4));
 }
@@ -725,23 +738,32 @@ body {
 }
 
 .final-hearts {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    margin-bottom: 35px;
     display: flex;
     justify-content: center;
     gap: 20px;
+    margin-bottom: 35px;
 }
 
-.final-hearts span {
+.final-heart {
+    width: 28px;
+    height: 28px;
+    position: relative;
     animation: heartbeat 1.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.4));
 }
 
-.final-hearts span:nth-child(1) { animation-delay: 0s; }
-.final-hearts span:nth-child(2) { animation-delay: 0.15s; }
-.final-hearts span:nth-child(3) { animation-delay: 0.3s; }
-.final-hearts span:nth-child(4) { animation-delay: 0.45s; }
-.final-hearts span:nth-child(5) { animation-delay: 0.6s; }
+.final-heart div {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff6b9d, #c2185b);
+    clip-path: path('M14,26 C6,18 0,11 0,6 C0,2 4,-1 8,1 C10,2 12,5 14,8 C16,5 18,2 20,1 C24,-1 28,2 28,6 C28,11 22,18 14,26Z');
+    transform-origin: center;
+}
+
+.final-heart:nth-child(1) { animation-delay: 0s; }
+.final-heart:nth-child(2) { animation-delay: 0.15s; }
+.final-heart:nth-child(3) { animation-delay: 0.3s; }
+.final-heart:nth-child(4) { animation-delay: 0.45s; }
+.final-heart:nth-child(5) { animation-delay: 0.6s; }
 
 .final-message {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
@@ -796,8 +818,16 @@ body {
     position: relative;
     max-width: 85vw;
     max-height: 85vh;
-    padding: 50px;
-    animation: scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 6px;
+    background: linear-gradient(135deg, rgba(255,107,157,0.6), rgba(156,39,176,0.4), rgba(255,107,157,0.6), rgba(156,39,176,0.4));
+    background-size: 300% 300%;
+    animation: gradientMove 6s ease infinite, scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 30px;
+    box-shadow:
+        0 0 0 2px rgba(233,30,99,0.3),
+        0 0 0 5px rgba(156,39,176,0.15),
+        0 0 60px rgba(233,30,99,0.2),
+        0 0 120px rgba(156,39,176,0.1);
 }
 
 @keyframes scaleInLightbox {
@@ -812,7 +842,13 @@ body {
 }
 
 .lightbox.active .lightbox-frame {
-    animation: scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: gradientMove 6s ease infinite, scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lightbox-img-wrap {
+    border-radius: 24px;
+    overflow: hidden;
+    background: #0a0a0f;
 }
 
 .lightbox-frame img {
@@ -820,115 +856,10 @@ body {
     max-height: 85vh;
     width: auto;
     height: auto;
-    border-radius: 24px;
     display: block;
     margin: 0 auto;
-    padding: 20px;
-    border: 4px solid transparent;
-    border-image: repeating-linear-gradient(
-        45deg,
-        rgba(233, 30, 99, 0.6) 0px,
-        rgba(233, 30, 99, 0.6) 8px,
-        rgba(156, 39, 176, 0.4) 8px,
-        rgba(156, 39, 176, 0.4) 16px,
-        rgba(255, 107, 157, 0.6) 16px,
-        rgba(255, 107, 157, 0.6) 24px,
-        rgba(233, 30, 99, 0.4) 24px,
-        rgba(233, 30, 99, 0.4) 32px
-    ) 24;
-    outline: 3px solid rgba(233, 30, 99, 0.3);
-    outline-offset: 6px;
-    box-shadow: 
-        0 0 0 2px rgba(233, 30, 99, 0.5),
-        0 0 0 5px rgba(156, 39, 176, 0.2),
-        0 0 60px rgba(233, 30, 99, 0.25),
-        0 0 120px rgba(156, 39, 176, 0.1);
-    animation: imgGlow 3s ease-in-out infinite alternate;
-    position: relative;
+    filter: brightness(1.02) contrast(1.02);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes imgGlow {
-    0% { box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.5), 0 0 0 5px rgba(156, 39, 176, 0.2), 0 0 60px rgba(233, 30, 99, 0.25), 0 0 120px rgba(156, 39, 176, 0.1); }
-    100% { box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.7), 0 0 0 5px rgba(156, 39, 176, 0.4), 0 0 80px rgba(233, 30, 99, 0.4), 0 0 150px rgba(156, 39, 176, 0.2); }
-}
-
-.lightbox-frame img::before {
-    content: '❤️ ❤️ ❤️';
-    position: absolute;
-    top: -10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    color: rgba(233, 30, 99, 0.6);
-}
-
-/* FRAME DECORATIONS */
-.frame-corner {
-    position: absolute;
-    font-size: 2.2rem;
-    z-index: 10;
-    animation: floatFrame 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
-}
-
-.frame-tl { top: 5px; left: 5px; }
-.frame-tr { top: 5px; right: 5px; animation-delay: 0.5s; }
-.frame-bl { bottom: 5px; left: 5px; animation-delay: 1s; }
-.frame-br { bottom: 5px; right: 5px; animation-delay: 1.5s; }
-
-@keyframes floatFrame {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(5deg); }
-}
-
-.frame-side {
-    position: absolute;
-    font-size: 1.1rem;
-    letter-spacing: 8px;
-    opacity: 0.8;
-    animation: sparkle 3s ease-in-out infinite;
-}
-
-.frame-top {
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-}
-
-.frame-bottom {
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    animation-delay: 1.5s;
-}
-
-.frame-left {
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    line-height: 2;
-    writing-mode: vertical-rl;
-    letter-spacing: 10px;
-}
-
-.frame-right {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    line-height: 2;
-    writing-mode: vertical-rl;
-    letter-spacing: 10px;
-    animation-delay: 1.5s;
-}
-
-@keyframes sparkle {
-    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 5px rgba(233, 30, 99, 0.3)); }
-    50% { opacity: 1; filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.6)); }
 }
 
 .lightbox-close {
@@ -985,41 +916,6 @@ body {
 .lightbox-prev { left: -20px; }
 .lightbox-next { right: -20px; }
 
-/* LIGHTBOX SPARKLE DECORATIONS */
-.frame-sparkle {
-    position: absolute;
-    font-size: 1.8rem;
-    z-index: 10;
-    animation: sparkleRotate 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
-}
-
-.frame-sparkle-tl { top: -5px; left: 50%; margin-left: -40px; animation-delay: 0s; }
-.frame-sparkle-tr { top: -5px; right: 50%; margin-right: -40px; animation-delay: 0.5s; }
-.frame-sparkle-bl { bottom: -5px; left: 50%; margin-left: -40px; animation-delay: 1s; }
-.frame-sparkle-br { bottom: -5px; right: 50%; margin-right: -40px; animation-delay: 1.5s; }
-
-@keyframes sparkleRotate {
-    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-    50% { transform: scale(1.4) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
-}
-
-.frame-hanging {
-    position: absolute;
-    font-size: 2rem;
-    z-index: 10;
-    animation: sway 2.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
-}
-
-.frame-hanging-l { top: -25px; left: 30%; animation-delay: 0s; }
-.frame-hanging-r { top: -25px; right: 30%; animation-delay: 1.25s; }
-
-@keyframes sway {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-8px) rotate(5deg); }
-}
-
 /* DEFTONES SECTION */
 .deftones-section {
     padding: 120px 0;
@@ -1048,10 +944,15 @@ body {
 }
 
 .deftones-vinyl {
-    font-size: 5rem;
     margin-bottom: 25px;
     animation: spin 8s linear infinite;
     filter: drop-shadow(0 0 30px rgba(180, 20, 60, 0.4));
+    display: flex;
+    justify-content: center;
+}
+
+.deftones-vinyl svg {
+    display: block;
 }
 
 @keyframes spin {
@@ -1183,31 +1084,6 @@ body {
     50% { opacity: 1; }
 }
 
-.deftones-hearts {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1.8rem;
-}
-
-.deftones-hearts span {
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-.deftones-hearts span:nth-child(odd) {
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-}
-
-.deftones-hearts span:nth-child(even) {
-    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.4));
-}
-
-.deftones-hearts span:nth-child(1) { animation-delay: 0s; }
-.deftones-hearts span:nth-child(2) { animation-delay: 0.15s; }
-.deftones-hearts span:nth-child(3) { animation-delay: 0.3s; }
-.deftones-hearts span:nth-child(4) { animation-delay: 0.45s; }
-.deftones-hearts span:nth-child(5) { animation-delay: 0.6s; }
-
 /* RESPONSIVE - TABLETS */
 @media (max-width: 1024px) {
     .love-grid {
@@ -1274,24 +1150,8 @@ body {
     }
 
     .lightbox-frame {
-        padding: 35px;
+        padding: 4px;
     }
-
-    .frame-sparkle {
-        font-size: 1.2rem;
-    }
-
-    .frame-hanging {
-        font-size: 1.3rem;
-    }
-
-    .frame-hanging-l { left: 20%; }
-    .frame-hanging-r { right: 20%; }
-
-    .frame-sparkle-tl { margin-left: -25px; }
-    .frame-sparkle-tr { margin-right: -25px; }
-    .frame-sparkle-bl { margin-left: -25px; }
-    .frame-sparkle-br { margin-right: -25px; }
 }
 
 /* RESPONSIVE - MOBILE PEQUENO */
@@ -1325,7 +1185,14 @@ body {
     }
 
     .love-icon {
-        font-size: 2.8rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+    }
+
+    .love-icon svg {
+        width: 22px;
+        height: 22px;
     }
 
     .gallery-grid {
@@ -1371,23 +1238,11 @@ body {
     }
 
     .lightbox-frame {
-        padding: 25px;
+        padding: 4px;
     }
 
     .lightbox-frame img {
         border-radius: 14px;
-    }
-
-    .frame-sparkle {
-        font-size: 1rem;
-    }
-
-    .frame-hanging {
-        font-size: 1.1rem;
-    }
-
-    .frame-side {
-        font-size: 0.8rem;
     }
 }
 
