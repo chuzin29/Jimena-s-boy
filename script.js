@@ -234,23 +234,7 @@ document.querySelectorAll('.love-card').forEach(card => {
 // LIGHTBOX
 let currentImageIndex = 0;
 const galleryImages = [];
-const captions = [
-    "Nuestro primer momento juntos 💕",
-    "Tu sonrisa ilumina todo ✨",
-    "Recuerdos que atesoro 🌸",
-    "Cada segundo a tu lado es un regalo 💖",
-    "Te amo más de lo que las palabras pueden decir 💌",
-    "Mi lugar favorito es a tu lado 🤗",
-    "Juntos somos invencibles 💪",
-    "Eres mi persona favorita en el mundo 🌍",
-    "Nuestra historia apenas comienza 📖",
-    "Contigo todo es mejor 🦋",
-    "Mi corazón es tuyo 💝",
-    "Gracias por existir 🙏",
-    "Los mejores momentos están por venir 🌟",
-    "Eres mi todo 🥰",
-    "Para siempre juntos ∞"
-];
+const captions = [];
 
 // Recopilar imagenes de la galeria
 document.querySelectorAll('.gallery-item img').forEach((img, index) => {
