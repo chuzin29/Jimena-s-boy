@@ -4,10 +4,13 @@ const START_DATE = new Date('2026-06-12');
 // YOUTUBE PLAYER - muted autoplay, unmute on splash click
 let ytPlayer = null;
 
-function onYouTubeIframeAPIReady() {
+// Cargar API de YouTube dinamicamente despues de definir el callback
+window.onYouTubeIframeAPIReady = function() {
+    const playerDiv = document.getElementById('youtube-player');
+    if (!playerDiv) return;
     ytPlayer = new YT.Player('youtube-player', {
-        height: '0',
-        width: '0',
+        height: '113',
+        width: '200',
         videoId: 'gEXbHKAuHSg',
         playerVars: {
             autoplay: 1,
@@ -16,25 +19,29 @@ function onYouTubeIframeAPIReady() {
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
+            iv_load_policy: 3,
             enablejsapi: 1
         },
         events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange
+            onReady: function(e) {
+                e.target.playVideo();
+                e.target.mute();
+            },
+            onStateChange: function(e) {
+                const status = document.getElementById('deftones-status');
+                if (e.data === YT.PlayerState.PLAYING && status) {
+                    status.textContent = '🔊 Reproduciendo Entombed';
+                }
+            }
         }
     });
-}
+};
 
-function onPlayerReady(event) {
-    event.target.playVideo();
-}
-
-function onPlayerStateChange(event) {
-    const status = document.getElementById('deftones-status');
-    if (event.data === YT.PlayerState.PLAYING && status) {
-        status.textContent = '🔊 Reproduciendo Entombed';
-    }
-}
+// Cargar script de YouTube API
+const tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+const firstScript = document.getElementsByTagName('script')[0];
+firstScript.parentNode.insertBefore(tag, firstScript);
 
 // SPLASH - Click para entrar
 window.addEventListener('load', () => {
