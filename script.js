@@ -1,54 +1,18 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
-// YOUTUBE PLAYER - muted autoplay, unmute on splash click
-let ytPlayer = null;
-
-// Cargar API de YouTube dinamicamente despues de definir el callback
-window.onYouTubeIframeAPIReady = function() {
-    const playerDiv = document.getElementById('youtube-player');
-    if (!playerDiv) return;
-    ytPlayer = new YT.Player('youtube-player', {
-        height: '113',
-        width: '200',
-        videoId: 'gEXbHKAuHSg',
-        playerVars: {
-            autoplay: 1,
-            mute: 1,
-            controls: 0,
-            modestbranding: 1,
-            rel: 0,
-            showinfo: 0,
-            iv_load_policy: 3,
-            enablejsapi: 1
-        },
-        events: {
-            onReady: function(e) {
-                e.target.playVideo();
-                e.target.mute();
-            },
-            onStateChange: function(e) {
-                const status = document.getElementById('deftones-status');
-                if (e.data === YT.PlayerState.PLAYING && status) {
-                    status.textContent = '🔊 Reproduciendo Entombed';
-                }
-            }
-        }
-    });
-};
-
-// Cargar script de YouTube API
-const tag = document.createElement('script');
-tag.src = 'https://www.youtube.com/iframe_api';
-const firstScript = document.getElementsByTagName('script')[0];
-firstScript.parentNode.insertBefore(tag, firstScript);
-
 // SPLASH - Click para entrar
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
+    const embed = document.getElementById('yt-embed');
 
     if (!splash) return;
+
+    // Precargar iframe muted (autoplay permitido)
+    if (embed) {
+        embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3';
+    }
 
     splash.addEventListener('click', function enterSite(e) {
         const x = e.clientX, y = e.clientY;
@@ -87,10 +51,9 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Unmute YouTube player
-        if (ytPlayer && ytPlayer.unMute) {
-            ytPlayer.unMute();
-            ytPlayer.setVolume(50);
+        // Quitar mute del video - recargar sin mute
+        if (embed) {
+            embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3';
         }
     }, { once: true });
 });
