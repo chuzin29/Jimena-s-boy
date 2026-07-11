@@ -5,7 +5,7 @@ const START_DATE = new Date('2026-06-12');
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
-    const embed = document.getElementById('yt-embed');
+    const embed = document.getElementById('fre-audio');
 
     if (!splash) return;
 
@@ -46,9 +46,9 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Quitar mute del video - recargar sin mute
+        // Iniciar audio - recargar Freefy para activar autoplay
         if (embed) {
-            embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3';
+            embed.src = 'https://freefy.app/track/64686183/entombed';
         }
     }, { once: true });
 });
