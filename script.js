@@ -1,11 +1,11 @@
-// Fecha de inicio de la relacion (CAMBIAR ESTA FECHA)
+// Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
 // Loader
 window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
-    }, 2500);
+    }, 2800);
 });
 
 // Contador de tiempo juntos
@@ -18,10 +18,26 @@ function updateCounter() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    if (daysEl) animateNumber(daysEl, days);
+    if (hoursEl) animateNumber(hoursEl, hours);
+    if (minutesEl) animateNumber(minutesEl, minutes);
+    if (secondsEl) animateNumber(secondsEl, seconds);
+}
+
+function animateNumber(element, target) {
+    const current = parseInt(element.textContent) || 0;
+    if (current === target) return;
+    element.textContent = target;
+    element.style.transform = 'scale(1.2)';
+    element.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+    setTimeout(() => {
+        element.style.transform = 'scale(1)';
+    }, 200);
 }
 
 setInterval(updateCounter, 1000);
@@ -30,96 +46,187 @@ updateCounter();
 // Corazones flotantes
 function createFloatingHeart() {
     const container = document.getElementById('hearts-container');
+    if (!container) return;
+
     const heart = document.createElement('div');
     heart.className = 'floating-heart';
-    heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝', '💘'][Math.floor(Math.random() * 6)];
+    const emojis = ['❤️', '💕', '💖', '💗', '💝', '💘', '🩷', '🤍'];
+    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
-    heart.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+    heart.style.animationDuration = (Math.random() * 12 + 10) + 's';
+    heart.style.fontSize = (Math.random() * 1.5 + 0.7) + 'rem';
+    heart.style.opacity = Math.random() * 0.4 + 0.2;
     container.appendChild(heart);
 
-    setTimeout(() => heart.remove(), 20000);
+    setTimeout(() => {
+        if (heart.parentNode) heart.remove();
+    }, 22000);
 }
 
-setInterval(createFloatingHeart, 800);
+// Crear corazones cada poco tiempo
+setInterval(createFloatingHeart, 600);
 
-// Animacion de tarjetas al hacer scroll
+// Crear corazones iniciales
+for (let i = 0; i < 8; i++) {
+    setTimeout(createFloatingHeart, i * 300);
+}
+
+// Intersection Observer para animaciones de scroll
 const observerOptions = {
-    threshold: 0.2,
+    threshold: 0.15,
     rootMargin: '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            setTimeout(() => {
+                entry.target.classList.add('visible');
+            }, index * 100);
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-document.querySelectorAll('.love-card').forEach(card => {
-    observer.observe(card);
+// Observar elementos
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.love-card').forEach(card => observer.observe(card));
+    document.querySelectorAll('.gallery-item').forEach(item => observer.observe(item));
+    document.querySelectorAll('.counter-box').forEach(box => observer.observe(box));
+
+    const letterCard = document.querySelector('.letter-card');
+    if (letterCard) observer.observe(letterCard);
 });
 
-// Smooth scroll
+// Smooth scroll para links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 });
 
-// Parallax en hero
+// Parallax suave en hero
+let ticking = false;
 window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero-content');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-        hero.style.opacity = 1 - (scrolled / 800);
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.25}px)`;
+                hero.style.opacity = 1 - (scrolled / 700);
+            }
+
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                if (scrolled > 500) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            }
+
+            ticking = false;
+        });
+        ticking = true;
     }
 });
 
-// Efecto de escritura en el titulo
-function typeWriter(element, text, speed = 100) {
+// Efecto de escritura
+function typeWriter(element, text, speed = 120) {
     let i = 0;
     element.textContent = '';
+    element.style.borderRight = '2px solid var(--pink)';
+
     function type() {
         if (i < text.length) {
             element.textContent += text.charAt(i);
             i++;
             setTimeout(type, speed);
+        } else {
+            setTimeout(() => {
+                element.style.borderRight = 'none';
+            }, 500);
         }
     }
     type();
 }
 
-// Iniciar efecto de escritura cuando cargue
+// Iniciar efecto de escritura
 window.addEventListener('load', () => {
     setTimeout(() => {
         const heroName = document.querySelector('.hero-name');
         if (heroName) {
-            typeWriter(heroName, 'Jimena', 150);
+            typeWriter(heroName, 'Jimena', 180);
         }
-    }, 2800);
+    }, 3000);
 });
 
-// Efecto de click en corazones
+// Efecto de click - corazones explotan
 document.addEventListener('click', (e) => {
-    for (let i = 0; i < 5; i++) {
+    const emojis = ['❤️', '💕', '💖', '💗', '💝'];
+    for (let i = 0; i < 6; i++) {
         setTimeout(() => {
             const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = (e.clientX + (Math.random() - 0.5) * 100) + 'px';
-            heart.style.top = e.clientY + 'px';
-            heart.style.animationDuration = '3s';
-            heart.style.fontSize = '1.5rem';
-            heart.style.position = 'fixed';
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.cssText = `
+                position: fixed;
+                left: ${e.clientX + (Math.random() - 0.5) * 120}px;
+                top: ${e.clientY + (Math.random() - 0.5) * 120}px;
+                font-size: ${Math.random() * 1.5 + 1}rem;
+                pointer-events: none;
+                z-index: 9999;
+                animation: clickBurst 1s ease-out forwards;
+            `;
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 3000);
-        }, i * 100);
+            setTimeout(() => heart.remove(), 1000);
+        }, i * 80);
     }
+});
+
+// Agregar animacion de burst al CSS dinamicamente
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes clickBurst {
+        0% {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(var(--tx, 0), var(--tx, -80px)) scale(0.3);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Back to top button
+const backToTop = document.createElement('button');
+backToTop.className = 'back-to-top';
+backToTop.innerHTML = '↑';
+backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+document.body.appendChild(backToTop);
+
+// Efecto tilt en tarjetas de amor
+document.querySelectorAll('.love-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 15;
+        const rotateY = (centerX - x) / 15;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+    });
 });
