@@ -1,11 +1,45 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
+// YOUTUBE PLAYER - muted autoplay, unmute on splash click
+let ytPlayer = null;
+
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('youtube-player', {
+        height: '0',
+        width: '0',
+        videoId: 'gEXbHKAuHSg',
+        playerVars: {
+            autoplay: 1,
+            mute: 1,
+            controls: 0,
+            modestbranding: 1,
+            rel: 0,
+            showinfo: 0,
+            enablejsapi: 1
+        },
+        events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+function onPlayerStateChange(event) {
+    const status = document.getElementById('deftones-status');
+    if (event.data === YT.PlayerState.PLAYING && status) {
+        status.textContent = '🔊 Reproduciendo Entombed';
+    }
+}
+
 // SPLASH - Click para entrar
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
-    const embed = document.getElementById('deftones-embed');
 
     if (!splash) return;
 
@@ -35,19 +69,21 @@ window.addEventListener('load', () => {
         }
 
         // Ocultar splash
-        splash.querySelector('div:last-child').style.transform = 'scale(0.7)';
-        splash.querySelector('div:last-child').style.opacity = '0';
+        const splashContent = splash.querySelector('div:last-child');
+        if (splashContent) {
+            splashContent.style.transform = 'scale(0.7)';
+            splashContent.style.opacity = '0';
+        }
         setTimeout(() => {
             splash.classList.add('hidden');
-            // Loader breve
             loader.classList.remove('hidden');
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Musica - Spotify
-        if (embed) {
-            embed.src = 'https://open.spotify.com/embed/track/4bLCPfBLKlqiONo6TALTh5?utm_source=generator&autoplay=1';
-            embed.style.display = 'block';
+        // Unmute YouTube player
+        if (ytPlayer && ytPlayer.unMute) {
+            ytPlayer.unMute();
+            ytPlayer.setVolume(50);
         }
     }, { once: true });
 });
