@@ -1,21 +1,14 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
-// AUDIO - direct M4A stream via yt-dlp (no ads, lightweight)
-const AUDIO_URL = "https://rr4---sn-upbvn8-n5ay.googlevideo.com/videoplayback?expire=1783813501&ei=HYFSarPqD_70zLUP5p60gAo&ip=190.99.43.242&id=o-AFhB2IiqlePxtaRp6gsIgqbLS4BRDLXD-vfD0i1kks7T&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=780&met=1783791901%2C&mh=cT&mm=18%2C29&mn=sn-upbvn8-n5ay%2Csn-u1hp55-5h&ms=aub%2Crdu&mv=m&mvi=4&pl=26&rms=aub%2Caub&gcr=sv&initcwndbps=1965000&bui=ARmQxEWNh03CLw8iBA-1Y3vStcUWX4NVq_u-0kVHVkQKf0Rhd8cwBg15w2hUa10TI59rO3t6O6Kla1IG&spc=SQ-umvX_KGNacvZuOiwgmHQy1ZA9o-jcmUz5pL7xUA&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=4846358&dur=299.239&lmt=1772295928231785&mt=1783791385&fvip=2&keepalive=yes&fexp=51565116%2C51946838%2C52017147&c=ANDROID_VR&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AHEqNM4wRQIgWezAQKw14aJ7gLorRF7Eh-B92-ulDzUCz3Y1WiejTywCIQDPTn_qiakBAJyk475kCMWdNRLRIOrCzHXvIuS0wv9hRw%3D%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhAJaevXx4nR8_I0d5c1-ErhiDCtkltL3oGEz-EDE4FizxAiEAosouLncehx_oH3KTkHMS3EkCppKIbAowIdU23SX8gRM%3D";
+// Freefy embed no requiere audio stream - se inicia en el click del splash
+const FREEFY_URL = "https://freefy.app/track/64686183/entombed/embed";
 
 // SPLASH - Click para entrar
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
-    const audio = document.getElementById('bg-audio');
     const status = document.getElementById('deftones-status');
-
-    // Precargar audio
-    if (audio && AUDIO_URL !== "M4A_URL_PLACEHOLDER") {
-        audio.src = AUDIO_URL;
-        audio.load();
-    }
 
     if (!splash) return;
 
@@ -56,14 +49,11 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Iniciar audio - direct stream
-        if (audio && audio.src) {
-            audio.volume = 0.5;
-            audio.play().then(() => {
-                if (status) status.textContent = '🔊 Reproduciendo Entombed';
-            }).catch(() => {
-                if (status) status.textContent = '⚠️ Toca la pantalla para activar el audio';
-            });
+        // Iniciar Freefy embed
+        const embed = document.getElementById('fre-embed');
+        if (embed) {
+            embed.src = FREEFY_URL;
+            if (status) status.textContent = '🔊 Reproduciendo Entombed';
         }
     }, { once: true });
 });
