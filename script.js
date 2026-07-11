@@ -9,11 +9,6 @@ window.addEventListener('load', () => {
 
     if (!splash) return;
 
-    // Precargar iframe muted (autoplay permitido)
-    if (embed) {
-        embed.src = 'https://www.youtube.com/embed/gEXbHKAuHSg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3';
-    }
-
     splash.addEventListener('click', function enterSite(e) {
         const x = e.clientX, y = e.clientY;
 
