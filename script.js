@@ -1,16 +1,21 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
-// Freefy embed no requiere audio stream - se inicia en el click del splash
-const FREEFY_URL = "https://freefy.app/track/64686183/entombed/embed";
-
 // SPLASH - Click para entrar
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
+    const audio = document.getElementById('bg-audio');
     const status = document.getElementById('deftones-status');
 
     if (!splash) return;
+
+    // Precargar audio local
+    if (audio) {
+        audio.src = 'images/entombed.webm';
+        audio.load();
+        audio.volume = 0.5;
+    }
 
     splash.addEventListener('click', function enterSite(e) {
         const x = e.clientX, y = e.clientY;
@@ -49,11 +54,13 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Iniciar Freefy embed
-        const embed = document.getElementById('fre-embed');
-        if (embed) {
-            embed.src = FREEFY_URL;
-            if (status) status.textContent = '🔊 Reproduciendo Entombed';
+        // Iniciar audio local
+        if (audio) {
+            audio.play().then(() => {
+                if (status) status.textContent = '🔊 Reproduciendo Entombed';
+            }).catch(() => {
+                if (status) status.textContent = '⚠️ Toca para activar el audio';
+            });
         }
     }, { once: true });
 });
