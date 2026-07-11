@@ -86,6 +86,41 @@ window.addEventListener('load', () => {
         }
     }, { once: true });
 });
+
+// HERO CAROUSEL - crossfade de fotos en el fondo
+function initHeroCarousel() {
+    const imgs = document.querySelectorAll('.gallery-item img');
+    if (!imgs.length) return;
+    const container = document.getElementById('hero-carousel');
+    if (!container) return;
+    const urls = Array.from(imgs).map(img => img.src);
+    const slides = [];
+    urls.forEach((url, i) => {
+        const div = document.createElement('div');
+        div.className = 'carousel-img';
+        div.style.backgroundImage = `url('${url}')`;
+        if (i === 0) div.classList.add('active');
+        container.appendChild(div);
+        slides.push(div);
+    });
+    let current = 0;
+    setInterval(() => {
+        slides[current]?.classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current]?.classList.add('active');
+    }, 5000);
+}
+
+// Iniciar carrusel cuando desaparezca el splash
+const splashObserver = new MutationObserver(() => {
+    const splash = document.getElementById('splash');
+    if (splash?.classList.contains('hidden')) {
+        initHeroCarousel();
+        splashObserver.disconnect();
+    }
+});
+splashObserver.observe(document.getElementById('splash'), { attributes: true, attributeFilter: ['class'] });
+
 // Contador de tiempo juntos
 function updateCounter() {
     const now = new Date();
