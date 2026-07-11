@@ -9,8 +9,6 @@
 </head>
 <body>
 
-<div id="hearts-container"></div>
-
 <!-- PANTALLA DE CARGA -->
 <div id="loader" class="loader">
     <div class="loader-content">
@@ -201,15 +199,20 @@
         <div class="frame-corner frame-tr">🌸</div>
         <div class="frame-corner frame-bl">🌸</div>
         <div class="frame-corner frame-br">🌸</div>
-        <div class="frame-side frame-top">💕 🌺 💖 🌸 💕 🌺 💖 🌸 💕</div>
-        <div class="frame-side frame-bottom">🌸 💖 🌺 💕 🌸 💖 🌺 💕 🌸</div>
-        <div class="frame-side frame-left">🌸<br>🌺<br>💕<br>💖<br>🌸<br>🌺<br>💕</div>
-        <div class="frame-side frame-right">💕<br>🌸<br>🌺<br>💖<br>💕<br>🌸<br>🌺</div>
+        <div class="frame-sparkle frame-sparkle-tl">✨</div>
+        <div class="frame-sparkle frame-sparkle-tr">✨</div>
+        <div class="frame-sparkle frame-sparkle-bl">✨</div>
+        <div class="frame-sparkle frame-sparkle-br">✨</div>
+        <div class="frame-hanging frame-hanging-l">💕</div>
+        <div class="frame-hanging frame-hanging-r">💕</div>
+        <div class="frame-side frame-top">💕 🌺 💖 🌸 ✨ 💕 🌺 💖 🌸 ✨ 💕</div>
+        <div class="frame-side frame-bottom">🌸 💖 🌺 💕 ✨ 🌸 💖 🌺 💕 ✨ 🌸</div>
+        <div class="frame-side frame-left">🌸<br>🌺<br>💕<br>💖<br>✨<br>🌸<br>🌺<br>💕<br>💖</div>
+        <div class="frame-side frame-right">💕<br>🌸<br>🌺<br>💖<br>✨<br>💕<br>🌸<br>🌺<br>💖</div>
         <button class="lightbox-close" onclick="closeLightbox()">×</button>
         <button class="lightbox-nav lightbox-prev" onclick="prevImage()">❮</button>
         <button class="lightbox-nav lightbox-next" onclick="nextImage()">❯</button>
         <img id="lightbox-img" src="" alt="Foto de Jimena">
-        <div class="lightbox-caption" id="lightbox-caption"></div>
     </div>
 </div>
 
@@ -220,11 +223,38 @@
             <div class="deftones-vinyl">🎵</div>
             <h2 class="deftones-title">Nuestra Banda Sonora</h2>
             <p class="deftones-quote">"Porque el amor también suena a Deftones"</p>
-            <div class="deftones-lyrics">
-                <p class="lyric-line">"I don't care where just far away"</p>
-                <p class="lyric-line">"I wanna see you, I wanna feel you"</p>
-                <p class="lyric-line">"Hold me so tight that I can't breathe"</p>
+
+            <div class="deftones-song">
+                <div class="deftones-song-badge">☆ Nuestra Canción ☆</div>
+                <h3 class="deftones-song-title">Entombed</h3>
+                <p class="deftones-song-album">Koi No Yokan · 2012</p>
+                <div class="deftones-lyrics">
+                    <p class="lyric-line">"From the day you arrived"</p>
+                    <p class="lyric-line">"I've remained by your side"</p>
+                    <p class="lyric-line">"In chains, entombed"</p>
+                    <p class="lyric-line lyric-break">⋆</p>
+                    <p class="lyric-line">"Placed inside, safe and sound"</p>
+                    <p class="lyric-line">"Shapes and colors are all I see"</p>
+                    <p class="lyric-line lyric-break">⋆</p>
+                    <p class="lyric-line">"On the day you arrived"</p>
+                    <p class="lyric-line">"I became your device"</p>
+                    <p class="lyric-line">"To name and soothe"</p>
+                    <p class="lyric-line lyric-break">⋆</p>
+                    <p class="lyric-line">"Safe inside..."</p>
+                </div>
+                <div class="deftones-player">
+                    <button class="deftones-play-btn" onclick="toggleMusic()">
+                        <span class="play-icon">▶</span>
+                        <span class="play-text">Reproducir nuestra canción</span>
+                    </button>
+                    <iframe id="deftones-embed" src="https://www.youtube.com/embed/gEXbHKAuHSg?enablejsapi=1" allow="autoplay; encrypted-media" style="display:none"></iframe>
+                </div>
             </div>
+
+            <div class="deftones-quote-secondary">
+                <p>"Arguably one of Deftones' most beautiful song... captures the feeling of being deeply in love."</p>
+            </div>
+
             <div class="deftones-hearts">
                 <span>🖤</span><span>🩷</span><span>🖤</span><span>🩷</span><span>🖤</span>
             </div>

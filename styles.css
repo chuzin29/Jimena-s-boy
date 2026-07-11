@@ -109,39 +109,7 @@ body {
     50% { opacity: 1; }
 }
 
-/* FLOATING HEARTS */
-#hearts-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-}
 
-.floating-heart {
-    position: absolute;
-    bottom: -60px;
-    animation: floatUp linear forwards;
-    opacity: 0.5;
-    will-change: transform, opacity;
-}
-
-@keyframes floatUp {
-    0% {
-        transform: translateY(0) rotate(0deg) scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 0.7;
-    }
-    100% {
-        transform: translateY(-115vh) rotate(540deg) scale(0.5);
-        opacity: 0;
-    }
-}
 
 /* HERO */
 .hero {
@@ -169,11 +137,23 @@ body {
 .hero-bg::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b9d' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(2px 2px at 20% 30%, rgba(255, 107, 157, 0.08) 0%, transparent 100%),
+        radial-gradient(2px 2px at 40% 70%, rgba(156, 39, 176, 0.08) 0%, transparent 100%),
+        radial-gradient(2px 2px at 60% 20%, rgba(255, 107, 157, 0.06) 0%, transparent 100%),
+        radial-gradient(2px 2px at 80% 60%, rgba(156, 39, 176, 0.08) 0%, transparent 100%),
+        radial-gradient(2px 2px at 10% 80%, rgba(255, 107, 157, 0.06) 0%, transparent 100%),
+        radial-gradient(2px 2px at 90% 40%, rgba(156, 39, 176, 0.06) 0%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.5; transform: translate(0, 0); }
+    100% { opacity: 1; transform: translate(2%, 2%); }
 }
 
 @keyframes bgPulse {
@@ -793,23 +773,23 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.92);
     z-index: 10000;
     display: none;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    backdrop-filter: blur(10px);
-    animation: fadeIn 0.4s ease;
+    backdrop-filter: blur(20px);
+    animation: fadeInLightbox 0.5s ease;
 }
 
 .lightbox.active {
     display: flex;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes fadeInLightbox {
+    from { opacity: 0; backdrop-filter: blur(0px); }
+    to { opacity: 1; backdrop-filter: blur(20px); }
 }
 
 .lightbox-frame {
@@ -817,30 +797,41 @@ body {
     max-width: 85vw;
     max-height: 85vh;
     padding: 50px;
-    animation: scaleInLightbox 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes scaleInLightbox {
     from {
         opacity: 0;
-        transform: scale(0.7);
+        transform: scale(0.5) rotate(-5deg);
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
     }
+}
+
+.lightbox.active .lightbox-frame {
+    animation: scaleInLightbox 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .lightbox-frame img {
     max-width: 100%;
     max-height: 75vh;
-    border-radius: 16px;
+    border-radius: 20px;
     display: block;
     box-shadow: 
-        0 0 0 4px rgba(233, 30, 99, 0.5),
-        0 0 0 8px rgba(156, 39, 176, 0.3),
-        0 0 0 12px rgba(233, 30, 99, 0.2),
-        0 0 60px rgba(233, 30, 99, 0.4);
+        0 0 0 3px rgba(233, 30, 99, 0.6),
+        0 0 0 7px rgba(156, 39, 176, 0.3),
+        0 0 0 11px rgba(233, 30, 99, 0.15),
+        0 0 50px rgba(233, 30, 99, 0.3),
+        0 0 100px rgba(156, 39, 176, 0.15);
+    animation: imgGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes imgGlow {
+    0% { box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.6), 0 0 0 7px rgba(156, 39, 176, 0.3), 0 0 0 11px rgba(233, 30, 99, 0.15), 0 0 50px rgba(233, 30, 99, 0.3), 0 0 100px rgba(156, 39, 176, 0.15); }
+    100% { box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.8), 0 0 0 7px rgba(156, 39, 176, 0.5), 0 0 0 11px rgba(233, 30, 99, 0.25), 0 0 70px rgba(233, 30, 99, 0.5), 0 0 120px rgba(156, 39, 176, 0.25); }
 }
 
 /* FRAME DECORATIONS */
@@ -963,13 +954,39 @@ body {
 .lightbox-prev { left: -20px; }
 .lightbox-next { right: -20px; }
 
-.lightbox-caption {
-    text-align: center;
-    margin-top: 20px;
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.3rem;
-    color: var(--pink);
-    text-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+/* LIGHTBOX SPARKLE DECORATIONS */
+.frame-sparkle {
+    position: absolute;
+    font-size: 1.8rem;
+    z-index: 10;
+    animation: sparkleRotate 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+}
+
+.frame-sparkle-tl { top: -5px; left: 50%; margin-left: -40px; animation-delay: 0s; }
+.frame-sparkle-tr { top: -5px; right: 50%; margin-right: -40px; animation-delay: 0.5s; }
+.frame-sparkle-bl { bottom: -5px; left: 50%; margin-left: -40px; animation-delay: 1s; }
+.frame-sparkle-br { bottom: -5px; right: 50%; margin-right: -40px; animation-delay: 1.5s; }
+
+@keyframes sparkleRotate {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+    50% { transform: scale(1.4) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
+}
+
+.frame-hanging {
+    position: absolute;
+    font-size: 2rem;
+    z-index: 10;
+    animation: sway 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
+}
+
+.frame-hanging-l { top: -25px; left: 30%; animation-delay: 0s; }
+.frame-hanging-r { top: -25px; right: 30%; animation-delay: 1.25s; }
+
+@keyframes sway {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-8px) rotate(5deg); }
 }
 
 /* DEFTONES SECTION */
@@ -1025,31 +1042,155 @@ body {
     font-family: 'Great Vibes', cursive;
     font-size: clamp(1.2rem, 3vw, 1.6rem);
     color: var(--text-muted);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     font-style: italic;
+}
+
+/* DEFTONES SONG - ENTOMBED */
+.deftones-song {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(60, 20, 40, 0.4));
+    border: 1px solid rgba(180, 20, 60, 0.3);
+    border-radius: 30px;
+    padding: 50px 40px;
+    max-width: 650px;
+    margin: 0 auto 50px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deftones-song::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(180, 20, 60, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(100, 0, 80, 0.05) 0%, transparent 50%);
+    animation: rotateBg 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotateBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.deftones-song-badge {
+    display: inline-block;
+    padding: 8px 25px;
+    background: linear-gradient(135deg, #c41e3a, #8b0045);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(196, 30, 58, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(196, 30, 58, 0.6); }
+}
+
+.deftones-song-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    color: #ff6b9d;
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 40px rgba(255, 107, 157, 0.3);
+}
+
+.deftones-song-album {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 1px;
 }
 
 .deftones-lyrics {
-    margin-bottom: 40px;
+    margin-bottom: 35px;
+    position: relative;
+    z-index: 1;
 }
 
 .lyric-line {
-    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
     color: rgba(255, 107, 157, 0.7);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     font-style: italic;
     letter-spacing: 1px;
     opacity: 0;
-    animation: fadeInLyric 0.8s ease forwards;
+    transform: translateY(15px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.lyric-line:nth-child(1) { animation-delay: 0.5s; }
-.lyric-line:nth-child(2) { animation-delay: 1s; }
-.lyric-line:nth-child(3) { animation-delay: 1.5s; }
+.lyric-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-@keyframes fadeInLyric {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.lyric-break {
+    color: rgba(255, 107, 157, 0.3);
+    font-size: 1.2rem;
+    margin: 12px 0;
+    letter-spacing: 0;
+}
+
+.deftones-player {
+    position: relative;
+    z-index: 1;
+}
+
+.deftones-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #c41e3a, #8b0045);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+}
+
+.deftones-play-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(196, 30, 58, 0.5);
+}
+
+.deftones-play-btn.playing {
+    background: linear-gradient(135deg, #2a7a3a, #1a5a2a);
+    box-shadow: 0 10px 30px rgba(42, 122, 58, 0.3);
+}
+
+.deftones-play-btn.playing:hover {
+    box-shadow: 0 20px 50px rgba(42, 122, 58, 0.5);
+}
+
+.deftones-quote-secondary {
+    max-width: 500px;
+    margin: 0 auto 40px;
+    padding: 20px 30px;
+    border-left: 3px solid rgba(255, 107, 157, 0.3);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.8;
+    text-align: left;
 }
 
 .deftones-hearts {
@@ -1137,6 +1278,35 @@ body {
     .scroll-indicator {
         bottom: 25px;
     }
+
+    .deftones-song {
+        padding: 35px 25px;
+    }
+
+    .deftones-play-btn {
+        font-size: 0.85rem;
+        padding: 12px 25px;
+    }
+
+    .lightbox-frame {
+        padding: 35px;
+    }
+
+    .frame-sparkle {
+        font-size: 1.2rem;
+    }
+
+    .frame-hanging {
+        font-size: 1.3rem;
+    }
+
+    .frame-hanging-l { left: 20%; }
+    .frame-hanging-r { right: 20%; }
+
+    .frame-sparkle-tl { margin-left: -25px; }
+    .frame-sparkle-tr { margin-right: -25px; }
+    .frame-sparkle-bl { margin-left: -25px; }
+    .frame-sparkle-br { margin-right: -25px; }
 }
 
 /* RESPONSIVE - MOBILE PEQUENO */
@@ -1199,6 +1369,45 @@ body {
 
     .final-hearts {
         gap: 12px;
+    }
+
+    .deftones-song {
+        padding: 25px 18px;
+        border-radius: 20px;
+    }
+
+    .deftones-song-badge {
+        font-size: 0.75rem;
+        padding: 6px 18px;
+    }
+
+    .deftones-song-title {
+        font-size: 1.6rem;
+    }
+
+    .deftones-play-btn {
+        font-size: 0.8rem;
+        padding: 10px 20px;
+    }
+
+    .lightbox-frame {
+        padding: 25px;
+    }
+
+    .lightbox-frame img {
+        border-radius: 14px;
+    }
+
+    .frame-sparkle {
+        font-size: 1rem;
+    }
+
+    .frame-hanging {
+        font-size: 1.1rem;
+    }
+
+    .frame-side {
+        font-size: 0.8rem;
     }
 }
 
