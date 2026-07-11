@@ -1,26 +1,45 @@
 // Fecha de inicio de la relacion
 const START_DATE = new Date('2026-06-12');
 
-// SPLASH - Click para entrar
+// SPLASH - Click para entrar + YouTube IFrame API
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash');
     const loader = document.getElementById('loader');
-    const audio = document.getElementById('bg-audio');
     const status = document.getElementById('deftones-status');
-
     if (!splash) return;
 
-    // Precargar audio local
-    if (audio) {
-        audio.src = 'images/entombed.webm';
-        audio.load();
-        audio.volume = 0.5;
-    }
+    let player = null;
+    let playQueued = false;
+
+    window.onYouTubeIframeAPIReady = () => {
+        player = new YT.Player('yt-player', {
+            videoId: 'gEXbHKAuHSg',
+            playerVars: {
+                playsinline: 1,
+                controls: 0,
+                autoplay: 0,
+                mute: 1,
+                rel: 0,
+                enablejsapi: 1
+            },
+            events: {
+                onReady: () => {
+                    if (playQueued && player) {
+                        player.playVideo();
+                        setTimeout(() => { try { player.unMute() } catch(e) {} }, 300);
+                    }
+                }
+            }
+        });
+    };
+
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
 
     splash.addEventListener('click', function enterSite(e) {
         const x = e.clientX, y = e.clientY;
 
-        // Explosion de particulas
         const emojis = ['💕', '✨', '🌸', '💖', '⭐', '🌺', '🩷', '💗'];
         for (let i = 0; i < 50; i++) {
             const p = document.createElement('div');
@@ -42,7 +61,6 @@ window.addEventListener('load', () => {
             setTimeout(() => p.remove(), 1200);
         }
 
-        // Ocultar splash
         const splashContent = splash.querySelector('div:last-child');
         if (splashContent) {
             splashContent.style.transform = 'scale(0.7)';
@@ -54,13 +72,13 @@ window.addEventListener('load', () => {
             setTimeout(() => loader.classList.add('hidden'), 1500);
         }, 400);
 
-        // Iniciar audio local
-        if (audio) {
-            audio.play().then(() => {
-                if (status) status.textContent = '🔊 Reproduciendo Entombed';
-            }).catch(() => {
-                if (status) status.textContent = '⚠️ Toca para activar el audio';
-            });
+        if (status) status.textContent = '🔊 Reproduciendo Entombed';
+
+        if (player && typeof player.playVideo === 'function') {
+            player.playVideo();
+            setTimeout(() => { try { player.unMute() } catch(e) {} }, 300);
+        } else {
+            playQueued = true;
         }
     }, { once: true });
 });
